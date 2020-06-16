@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Transaction History
+{% endblock %}
+
+{% block main %}
+    <div>
+        <table class="portfolio">
+            <tr>
+                <th>Date</th>
+                <th>Symbol</th>
+                <th>Trade Type</th>
+                <th>Number of Shares</th>
+                <th>Price</th>
+                <th>Total Value</th>
+            </tr>
+            {% for row in rows %}
+                <tr>
+                    <td>{{ row['timestamp'] }}</td>
+                    <td>{{ row['symbol'] }}</td>
+                    <td>{{ row['trade'] }}</td>
+                    <td>{{ row['shares'] }}</td>
+                    <td>${{ '%0.2f' % row['price']|float }}</td>
+                    <td class="value">${{ '%0.2f' | format(row['shares'] * row["price"]|float) }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
