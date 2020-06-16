@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    My Holdings
+{% endblock %}
+
+
+{% block main %}
+    <div>
+        <table id="portfolio" class="tbl">
+            <tr>
+                <th>Stock</th>
+                <th>Number of Shares</th>
+                <th>Net Cost</th>
+                <th>Current Value</th>
+            </tr>
+            {% for row in rows %}
+                <tr>
+                    <td>{{ row['symbol'] }}</td>
+                    <td>{{ row['num_shares'] }}</td>
+                    <td>${{ '%0.2f' % row['net_cost']|float }}</td>
+                    <td class="value">${{ '%0.2f' | format(row['num_shares'] * lookup(row['symbol'])["price"]|float) }}</td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    <td>CASH</td>
+                    <td></td>
+                    <td></td>
+                    <td class="value">${{ '%0.2f' % cash }}</td>
+                </tr>
+                <tr>
+                    <td><b>TOTAL VALUE</b></td>
+                    <td></td>
+                    <td></td>
+                    <td id="total"></td>
+                </tr>
+        </table>
+        <script>
+            var total = 0;
+            var values = document.getElementById("portfolio").getElementsByClassName("value");
+            for (var i = 0; i < values.length; i++) {
+                    num = values[i].innerText;
+                    if (num === "") {
+                    }
+                    else {
+                        num = parseFloat(values[i].innerText.slice(1,));
+                        total += num;
+                    }
+
+            }
+            document.getElementById("total").innerHTML = '<b>$' + parseFloat(total.toFixed(2)) + '</b>' ;
+        </script>
+    </div>
+
+{% endblock %}
